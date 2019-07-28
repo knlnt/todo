@@ -1,0 +1,22 @@
+form > input, form > textarea{
+    outline: none;
+    font-size:16px;
+    padding: 10px 15px;
+    width:100%;
+    margin:0 0 10px 0
+}
+form > textarea{
+    resize:none;
+    height:200px
+}
+.stat{
+    cursor:pointer;
+    color:#4cd137;
+    display:block;
+    margin:5px 0 10px 20px;
+    text-decoration:underline;
+    font-weight:bold
+}
+.statEnd{
+    color:#e84118
+}
