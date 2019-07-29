@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./Bt.css";
+import "./Btn.css";
 
 function Btn(props) {
   const { value, onClick } = props;
