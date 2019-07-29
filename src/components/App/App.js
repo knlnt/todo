@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Form from "./../Form/Form";
+import TaskManager from "../Form/TaskManager";
 import Tasks from "./../Tasks/Tasks";
 
 class App extends Component {
@@ -26,13 +26,13 @@ class App extends Component {
           <div>Задач нет</div>
         )}
         {this.state.windowTaskOpen[1] ? (
-          <Form
+          <TaskManager
             type={this.state.windowTaskOpen[0]}
-            openWindowTask={this.openWindowTask}
+            closeWindowTask={this.openWindowTask}
             setNewTasks={this.setNewTasks}
             task={this.state.tasks[this.state.currentTask]}
             editTask={this.editTask}
-            delTask={this.delTask}
+            handleDelTask={this.handleDelTask}
           />
         ) : null}
       </div>
@@ -57,7 +57,7 @@ class App extends Component {
       })
     });
   };
-  delTask = () => {
+  handleDelTask = () => {
     const { currentTask, tasks } = this.state;
     this.setState({
       tasks: tasks.filter((task, id) => {

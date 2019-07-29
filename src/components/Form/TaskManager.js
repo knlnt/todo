@@ -1,22 +1,20 @@
 import React, { Component } from "react";
-import Btn from "./../Btn/Btn";
-import "./style.css";
+import Btn from "../Btn/Btn";
+import "./TaskManager.css";
+const INITIAL_STATE = {
+  name: "",
+  info: "",
+  done: false
+};
 
 class Form extends Component {
   constructor(props) {
     super(props);
 
-    this.initialState = {
-      name: "",
-      info: "",
-      state: false
-    };
-    props.type === 1
-      ? (this.state = this.initialState)
-      : (this.state = props.task);
+    this.state = props.type === 1 ? INITIAL_STATE : props.task;
   }
   render() {
-    const { name, info, stat } = this.state;
+    const { name, info, done } = this.state;
 
     return (
       <div className="window">
@@ -27,61 +25,61 @@ class Form extends Component {
             name="name"
             placeholder="Название"
             value={name}
-            onChange={this.inputChange}
+            onChange={this.handleInputChange}
             required
           />
           <textarea
             name="info"
             placeholder="Описание"
             value={info}
-            onChange={this.inputChange}
+            onChange={this.handleInputChange}
             required
           />
           {this.props.type === 2 && (
             <p>
               Состояние:
               <label
-                className={"stat " + (stat && "statEnd")}
-                onClick={this.updateState}
+                className={"done " + (done && "doneEnd")}
+                onClick={this.handleUpdateState}
               >
-                {stat ? "Завершена" : "В процессе"}
+                {done ? "Завершена" : "В процессе"}
               </label>
             </p>
           )}
           <Btn
             value={this.props.type === 1 ? "Добавить" : "Сохранить"}
-            onClick={this.submitForm}
+            onClick={this.handleSubmitForm}
           />
           {this.props.type === 2 && (
-            <Btn value="Удалить" onClick={this.delTask} />
+            <Btn value="Удалить" onClick={this.handleDelTask} />
           )}
-          <Btn value="Отмена" onClick={this.props.openWindowTask} />
+          <Btn value="Отмена" onClick={this.props.closeWindowTask} />
         </form>
       </div>
     );
   }
-  inputChange = event => {
+  handleInputChange = event => {
     const { name, value } = event.target;
 
     this.setState({
       [name]: value
     });
   };
-  submitForm = () => {
+  handleSubmitForm = () => {
     this.props.type === 1
       ? this.props.setNewTasks(this.state)
       : this.props.editTask(this.state);
-    this.setState(this.initialState);
-    this.props.openWindowTask(-1, 1);
+    this.setState(INITIAL_STATE);
+    this.props.closeWindowTask(-1, 1);
   };
-  delTask = () => {
-    this.props.delTask();
-    this.setState(this.initialState);
-    this.props.openWindowTask(-1, 1);
+  handleDelTask = () => {
+    this.props.handleDelTask();
+    this.setState(INITIAL_STATE);
+    this.props.closeWindowTask(-1, 1);
   };
-  updateState = () => {
+  handleUpdateState = () => {
     this.setState({
-      stat: !this.state.stat
+      done: !this.state.done
     });
   };
 }
