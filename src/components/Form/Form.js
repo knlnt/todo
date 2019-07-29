@@ -52,9 +52,9 @@ class Form extends Component {
             value={this.props.type === 1 ? "Добавить" : "Сохранить"}
             onClick={this.submitForm}
           />
-          {this.props.type === 2 ? (
+          {this.props.type === 2 && (
             <Btn value="Удалить" onClick={this.delTask} />
-          ) : null}
+          )}
           <Btn value="Отмена" onClick={this.props.openWindowTask} />
         </form>
       </div>

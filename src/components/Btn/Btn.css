@@ -2,6 +2,7 @@
   border: none;
   color: #ffffff;
   background: #1e90ff;
+  -webkit-transition: background 0.3s;
   transition: background 0.3s;
 }
 .btn:hover {
