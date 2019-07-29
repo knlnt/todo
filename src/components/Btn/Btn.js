@@ -1,12 +1,12 @@
-import React, { Component } from "react"
-import "./style.css"
+import React, { Component } from "react";
+import "./style.css";
 
-class Btn extends Component{
-    render(){
-        const { val, meth } = this.props
+function Btn(props) {
+  const { value, onClick } = props;
 
-        return <input className="btn" type="button" value={val} onClick={meth} />
-    }
+  return (
+    <input className="btn" type="button" value={value} onClick={onClick} />
+  );
 }
 
-export default Btn
+export default Btn;
