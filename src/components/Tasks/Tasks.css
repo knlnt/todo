@@ -1,0 +1,22 @@
+#main > ul {
+  max-height: 431px;
+  overflow: auto;
+}
+.window {
+  position: absolute;
+  top: 0;
+  background: #ffffff;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.window > h2 {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  cursor: default;
+}

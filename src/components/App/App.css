@@ -1,0 +1,18 @@
+#main {
+  position: relative;
+  width: 400px;
+  height: 500px;
+  -webkit-box-shadow: 0 0 70px #000000;
+  box-shadow: 0 0 70px #000000;
+  background: #ffffff;
+  border-top: 3px dotted #000000;
+  padding: 15px 15px 0 15px;
+}
+#main > h1 > span {
+  -webkit-transition: color 0.5s;
+  transition: color 0.5s;
+}
+#main > h1 > span:hover {
+  cursor: pointer;
+  color: #d3d3d3;
+}

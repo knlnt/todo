@@ -1,32 +1,19 @@
-import React, { Component } from "react";
-import "./style.css";
+import React from "react";
+import Task from "./../Task/Task";
+import "./Tasks.css";
 
-class Tasks extends Component {
-  render() {
-    return (
-      <ul>
+const Tasks = props => {
+  return (
+    <ul>
+      {props.tasks.map(task => (
         <Task
-          tasks={this.props.tasks}
-          openWindowTask={this.props.openWindowTask}
+          key={task.id}
+          task={task}
+          handleClickTask={props.handleClickTask}
         />
-      </ul>
-    );
-  }
-}
-
-const Task = props => {
-  const rows = props.tasks.map((row, index) => {
-    return (
-      <li
-        key={index}
-        onClick={() => props.openWindowTask(index, 2)}
-        className={row.done && "endTask"}
-      >
-        {row.name}
-      </li>
-    );
-  });
-  return rows;
+      ))}
+    </ul>
+  );
 };
 
 export default Tasks;

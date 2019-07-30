@@ -1,69 +1,97 @@
 import React, { Component } from "react";
+import "./App.css";
 import TaskManager from "../Form/TaskManager";
 import Tasks from "./../Tasks/Tasks";
+import { TYPE_TASK_MANAGER } from "./../../consts";
 
 class App extends Component {
   state = {
-    windowTaskOpen: [1, false],
+    typeTaskManager: TYPE_TASK_MANAGER.newTask,
+    isOpenTaskManager: false,
     tasks: [],
-    currentTask: -1
+    currentTask: null
   };
   render() {
     return (
       <div id="main">
         <h1>
-          <span title="Новая задача" onClick={() => this.openWindowTask(-1, 1)}>
+          <span title="Новая задача" onClick={this.handleNewTaskClick}>
             +
           </span>{" "}
           | Задачи
         </h1>
         {this.state.tasks.length > 0 ? (
-          <Tasks
-            tasks={this.state.tasks}
-            openWindowTask={this.openWindowTask}
-          />
+          <Tasks tasks={this.state.tasks} handleClickTask={this.openTask} />
         ) : (
           <div>Задач нет</div>
         )}
-        {this.state.windowTaskOpen[1] ? (
+        {this.state.isOpenTaskManager ? (
           <TaskManager
-            type={this.state.windowTaskOpen[0]}
-            closeWindowTask={this.openWindowTask}
-            setNewTasks={this.setNewTasks}
-            task={this.state.tasks[this.state.currentTask]}
+            typeTaskManager={this.state.typeTaskManager}
+            closeTaskManager={this.toggleTaskManager}
+            addNewTask={this.addNewTask}
+            task={this.state.currentTask}
             editTask={this.editTask}
-            handleDelTask={this.handleDelTask}
+            delTask={this.delTask}
           />
         ) : null}
       </div>
     );
   }
-  openWindowTask = (id, type) => {
+  toggleTaskManager = () => {
+    this.setState(prevState => ({
+      isOpenTaskManager: !prevState.isOpenTaskManager
+    }));
+  };
+  updateTypeTaskManager = type => {
     this.setState({
-      windowTaskOpen: [type, !this.state.windowTaskOpen[1]],
-      currentTask: id
+      typeTaskManager: type
     });
   };
-  setNewTasks = newTask => {
-    this.setState({
-      tasks: [...this.state.tasks, newTask]
-    });
+  addNewTask = newTask => {
+    newTask.id = this.addNewIdForTask();
+    this.setState(prevState => ({
+      tasks: [...prevState.tasks, newTask]
+    }));
   };
-  editTask = task => {
-    this.setState({
-      tasks: this.state.tasks.map((row, index) => {
-        if (this.state.currentTask === index) row = task;
-        return row;
+  editTask = currentTask => {
+    this.setState(prevState => ({
+      tasks: prevState.tasks.map(task => {
+        return currentTask.id === task.id ? currentTask : task;
       })
-    });
+    }));
   };
-  handleDelTask = () => {
-    const { currentTask, tasks } = this.state;
-    this.setState({
-      tasks: tasks.filter((task, id) => {
-        return id !== currentTask;
+  delTask = idDelTask => {
+    this.setState(prevState => ({
+      tasks: prevState.tasks.filter(task => {
+        return task.id !== idDelTask;
       })
+    }));
+  };
+  openTask = id => {
+    this.setState({
+      currentTask: this.returnCurrentTask(id)
     });
+    this.updateTypeTaskManager(TYPE_TASK_MANAGER.editTask);
+    this.toggleTaskManager();
+  };
+  addNewIdForTask = id => {
+    if (id === undefined) id = 0;
+    if (this.state.tasks.length > 0) {
+      id++;
+      this.state.tasks.map(task => {
+        if (task.id === id) id = this.addNewIdForTask(id);
+        return true;
+      });
+    }
+    return id;
+  };
+  returnCurrentTask = id => {
+    return this.state.tasks[this.state.tasks.findIndex(task => task.id === id)];
+  };
+  handleNewTaskClick = () => {
+    this.updateTypeTaskManager(TYPE_TASK_MANAGER.newTask);
+    this.toggleTaskManager();
   };
 }
 
