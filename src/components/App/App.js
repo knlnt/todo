@@ -7,91 +7,92 @@ import { TYPE_TASK_MANAGER } from "./../../consts";
 class App extends Component {
   state = {
     typeTaskManager: TYPE_TASK_MANAGER.newTask,
-    isOpenTaskManager: false,
     tasks: [],
     currentTask: null
   };
   render() {
+    const { tasks, typeTaskManager, currentTask } = this.state;
     return (
       <div id="main">
         <h1>
-          <span title="Новая задача" onClick={this.handleNewTaskClick}>
+          <span title="Новая задача" onClick={this.handleNewTask}>
             +
           </span>{" "}
           | Задачи
         </h1>
-        {this.state.tasks.length > 0 ? (
-          <Tasks tasks={this.state.tasks} handleClickTask={this.openTask} />
+        {tasks.length > 0 ? (
+          <Tasks tasks={tasks} onClick={this.handleOpenTask} />
         ) : (
           <div>Задач нет</div>
         )}
-        {this.state.isOpenTaskManager ? (
+        {currentTask && (
           <TaskManager
-            typeTaskManager={this.state.typeTaskManager}
-            closeTaskManager={this.toggleTaskManager}
-            addNewTask={this.addNewTask}
-            task={this.state.currentTask}
-            editTask={this.editTask}
-            delTask={this.delTask}
+            type={typeTaskManager}
+            onClose={this.handleCloseTaskManager}
+            task={currentTask}
+            onAddTask={this.handleAddTask}
+            onEdit={this.handleEditTask}
+            onDelete={this.handleDeleteTask}
           />
-        ) : null}
+        )}
       </div>
     );
   }
-  toggleTaskManager = () => {
-    this.setState(prevState => ({
-      isOpenTaskManager: !prevState.isOpenTaskManager
-    }));
-  };
   updateTypeTaskManager = type => {
     this.setState({
       typeTaskManager: type
     });
   };
-  addNewTask = newTask => {
-    newTask.id = this.addNewIdForTask();
+  getIdForNewTask = () => {
+    return this.state.tasks.length > 0
+      ? this.state.tasks[this.state.tasks.length - 1].id + 1
+      : 0;
+  };
+  getCurrentTask = id => {
+    return this.state.tasks[this.state.tasks.findIndex(task => task.id === id)];
+  };
+  toZeroCurrentTask = () => {
+    this.setState({
+      currentTask: null
+    });
+  };
+  handleNewTask = () => {
+    this.updateTypeTaskManager(TYPE_TASK_MANAGER.newTask);
+    this.setState({
+      currentTask: -1
+    });
+  };
+  handleAddTask = newTask => {
+    newTask.id = this.getIdForNewTask();
     this.setState(prevState => ({
       tasks: [...prevState.tasks, newTask]
     }));
+    this.toZeroCurrentTask();
   };
-  editTask = currentTask => {
+  handleEditTask = currentTask => {
     this.setState(prevState => ({
       tasks: prevState.tasks.map(task => {
         return currentTask.id === task.id ? currentTask : task;
       })
     }));
+    this.toZeroCurrentTask();
   };
-  delTask = idDelTask => {
+  handleDeleteTask = idDelTask => {
     this.setState(prevState => ({
       tasks: prevState.tasks.filter(task => {
         return task.id !== idDelTask;
       })
     }));
+    this.toZeroCurrentTask();
   };
-  openTask = id => {
+  handleOpenTask = id => {
     this.setState({
-      currentTask: this.returnCurrentTask(id)
+      currentTask: this.getCurrentTask(id)
     });
     this.updateTypeTaskManager(TYPE_TASK_MANAGER.editTask);
-    this.toggleTaskManager();
   };
-  addNewIdForTask = id => {
-    if (id === undefined) id = 0;
-    if (this.state.tasks.length > 0) {
-      id++;
-      this.state.tasks.map(task => {
-        if (task.id === id) id = this.addNewIdForTask(id);
-        return true;
-      });
-    }
-    return id;
-  };
-  returnCurrentTask = id => {
-    return this.state.tasks[this.state.tasks.findIndex(task => task.id === id)];
-  };
-  handleNewTaskClick = () => {
-    this.updateTypeTaskManager(TYPE_TASK_MANAGER.newTask);
-    this.toggleTaskManager();
+  handleCloseTaskManager = () => {
+    this.toZeroCurrentTask();
   };
 }
 

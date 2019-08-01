@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Btn from "../Btn/Btn";
+import { TYPE_TASK_MANAGER } from "./../../consts";
 import "./TaskManager.css";
 const INITIAL_STATE = {
   id: 0,
@@ -11,15 +12,16 @@ const INITIAL_STATE = {
 class Form extends Component {
   constructor(props) {
     super(props);
-    this.state = props.typeTaskManager === 1 ? INITIAL_STATE : props.task;
+    this.state =
+      props.type === TYPE_TASK_MANAGER.newTask ? INITIAL_STATE : props.task;
   }
   render() {
     const { name, info, done } = this.state;
-    const { typeTaskManager } = this.props;
+    const { type } = this.props;
 
     return (
       <div className="window">
-        {typeTaskManager === 1 && <h2>Новая задача</h2>}
+        {type === TYPE_TASK_MANAGER.newTask && <h2>Новая задача</h2>}
         <form>
           <input
             type="text"
@@ -36,7 +38,7 @@ class Form extends Component {
             onChange={this.handleInputChange}
             required
           />
-          {typeTaskManager === 2 && (
+          {type === TYPE_TASK_MANAGER.editTask && (
             <p>
               Состояние:
               <label
@@ -48,12 +50,16 @@ class Form extends Component {
             </p>
           )}
           <Btn
-            value={typeTaskManager === 1 ? "Добавить" : "Сохранить"}
+            value={
+              type === TYPE_TASK_MANAGER.newTask ? "Добавить" : "Сохранить"
+            }
             onClick={() =>
-              this.handleSubmitForm(typeTaskManager === 1 ? "add" : "save")
+              this.handleSubmitForm(
+                type === TYPE_TASK_MANAGER.newTask ? "add" : "save"
+              )
             }
           />
-          {typeTaskManager === 2 && (
+          {type === TYPE_TASK_MANAGER.editTask && (
             <Btn value="Удалить" onClick={() => this.handleSubmitForm("del")} />
           )}
           <Btn value="Отмена" onClick={this.handleCancelClick} />
@@ -62,17 +68,13 @@ class Form extends Component {
     );
   }
   addNewTask = () => {
-    this.props.addNewTask(this.state);
+    this.props.onAddTask(this.state);
   };
   editTask = () => {
-    this.props.editTask(this.state);
+    this.props.onEdit(this.state);
   };
   delTask = () => {
-    this.props.delTask(this.state.id);
-  };
-  closeTaskManager = () => {
-    this.setState(INITIAL_STATE);
-    this.props.closeTaskManager();
+    this.props.onDelete(this.state.id);
   };
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -93,7 +95,8 @@ class Form extends Component {
         this.delTask();
         break;
     }
-    this.closeTaskManager();
+    this.props.onClose();
+    this.setState(INITIAL_STATE);
   };
   handleDoneClick = () => {
     this.setState(prevState => ({
@@ -101,7 +104,8 @@ class Form extends Component {
     }));
   };
   handleCancelClick = () => {
-    this.closeTaskManager();
+    this.props.onClose();
+    this.setState(INITIAL_STATE);
   };
 }
 
