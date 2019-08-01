@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { TASK_TYPE } from "./../../types";
 import "./Task.css";
 
 const Task = ({ task, onClick }) => {
@@ -12,12 +13,7 @@ const Task = ({ task, onClick }) => {
 };
 
 Task.propTypes = {
-  task: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    info: PropTypes.string,
-    done: PropTypes.bool
-  }),
+  task: PropTypes.shape(TASK_TYPE),
   onClick: PropTypes.func
 };
 

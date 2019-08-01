@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Btn from "../Btn/Btn";
 import { TYPE_TASK_MANAGER } from "./../../consts";
+import { TASK_TYPE } from "./../../types";
 import "./TaskManager.css";
 const INITIAL_STATE = {
   id: 0,
@@ -112,12 +113,7 @@ class TaskManager extends Component {
 
 TaskManager.propTypes = {
   type: PropTypes.number,
-  task: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    info: PropTypes.string,
-    done: PropTypes.bool
-  }),
+  task: PropTypes.shape(TASK_TYPE),
   onClose: PropTypes.func,
   onAddTask: PropTypes.func,
   onEdit: PropTypes.func,

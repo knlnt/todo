@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Task from "./../Task/Task";
+import { TASK_TYPE } from "./../../types";
 import "./Tasks.css";
 
 const Tasks = ({ tasks, onClick }) => {
@@ -14,14 +15,7 @@ const Tasks = ({ tasks, onClick }) => {
 };
 
 Tasks.propTypes = {
-  tasks: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-      info: PropTypes.string,
-      done: PropTypes.bool
-    })
-  ),
+  tasks: PropTypes.arrayOf(PropTypes.shape(TASK_TYPE)),
   onClick: PropTypes.func
 };
 
