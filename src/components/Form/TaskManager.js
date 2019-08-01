@@ -10,7 +10,7 @@ const INITIAL_STATE = {
   done: false
 };
 
-class Form extends Component {
+class TaskManager extends Component {
   constructor(props) {
     super(props);
     this.state =
@@ -110,11 +110,18 @@ class Form extends Component {
   };
 }
 
-INITIAL_STATE.propTypes = {
-  id: PropTypes.number,
-  name: PropTypes.string,
-  info: PropTypes.string,
-  done: PropTypes.bool
+TaskManager.propTypes = {
+  type: PropTypes.number,
+  task: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    info: PropTypes.string,
+    done: PropTypes.bool
+  }),
+  onClose: PropTypes.func,
+  onAddTask: PropTypes.func,
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func
 };
 
-export default Form;
+export default TaskManager;
