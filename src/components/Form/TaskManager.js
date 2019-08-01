@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Btn from "../Btn/Btn";
 import { TYPE_TASK_MANAGER } from "./../../consts";
 import "./TaskManager.css";
@@ -108,5 +109,12 @@ class Form extends Component {
     this.setState(INITIAL_STATE);
   };
 }
+
+INITIAL_STATE.propTypes = {
+  id: PropTypes.number,
+  name: PropTypes.string,
+  info: PropTypes.string,
+  done: PropTypes.bool
+};
 
 export default Form;

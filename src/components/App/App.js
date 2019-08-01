@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "./App.css";
 import TaskManager from "../Form/TaskManager";
 import Tasks from "./../Tasks/Tasks";
@@ -95,5 +96,17 @@ class App extends Component {
     this.toZeroCurrentTask();
   };
 }
+
+App.propTypes = {
+  typeTaskManager: PropTypes.number,
+  tasks: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      info: PropTypes.string,
+      done: PropTypes.bool
+    })
+  )
+};
 
 export default App;
